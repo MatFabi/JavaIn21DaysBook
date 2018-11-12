@@ -1,0 +1,49 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.java21days;
+
+/**
+ *
+ * @author Mateusz
+ */
+public class PrimeThreads {
+    public static void main(String[] args) {
+        PrimeThreads pt = new PrimeThreads(args);
+    }
+    public PrimeThreads(String[] arguments){
+        PrimeFinder[] finder= new PrimeFinder[arguments.length];
+        for (int i=0; i<arguments.length; i++){
+            try{
+                    long count = Long.parseLong(arguments[i]);
+                    finder[i] = new PrimeFinder(count);
+                    System.out.println("Szukam liczby pierwszej "+count);
+            }catch (NumberFormatException nfe){
+                System.out.println("Błąd" + nfe.getMessage());
+            }   
+        }
+        boolean complete = false;
+        while(!complete){
+            complete=true;
+            for(int j=0;j<finder.length;j++){
+                if(finder[j]==null) continue;
+                if(!finder[j].finished){
+                    complete=false;
+                }else{
+                    displayResult(finder[j]);
+                    finder[j]=null;
+                }
+            }
+            try{
+                Thread.sleep(1000);
+            }catch(InterruptedException ie){
+                
+            }
+        }
+    }
+    private void displayResult(PrimeFinder finder){
+        System.out.println("Liczba pierwsza " + finder.target + " to " +finder.prime);
+    }
+}
